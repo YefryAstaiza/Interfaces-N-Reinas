@@ -1,0 +1,360 @@
+:root {
+    --primary-color: #4a6fa5;
+    --secondary-color: #6b8cbc;
+    --accent-color: #ff6b6b;
+    --background-color: #f8f9fa;
+    --card-color: #ffffff;
+    --text-color: #333333;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+@media (max-width: 900px) {
+    .content {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    background: var(--card-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 100%;
+}
+
+button:hover {
+    background: var(--secondary-color);
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 600px) {
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.solution-info {
+    background: #f0f7ff;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.board-container {
+    text-align: center;
+}
+
+.board-image {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.param-value {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.success {
+    color: #28a745;
+}
+
+.warning {
+    color: #ffc107;
+}
+
+.danger {
+    color: #dc3545;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-clear {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: auto;
+}
+
+.btn-clear:hover {
+    background: #ff5252;
+}
+
+.analysis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.analysis-card {
+    background: var(--card-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.analysis-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.analysis-card p {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+
+.results-table th, .results-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.results-table th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.results-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.results-table tr:hover {
+    background-color: #f0f7ff;
+}
+
+/* Estilos para el registro del algoritmo */
+.log-container {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.log-content {
+    white-space: pre-wrap;
+}
+
+.log-header {
+    font-weight: bold;
+    color: var(--primary-color);
+    text-align: center;
+    margin: 5px 0;
+    padding: 5px;
+    background: #e3f2fd;
+    border-radius: 4px;
+}
+
+.log-section {
+    font-weight: bold;
+    color: #2c3e50;
+    margin: 10px 0 5px 0;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #bdc3c7;
+}
+
+.log-individual {
+    color: #34495e;
+    margin-left: 10px;
+    font-weight: 500;
+}
+
+.log-conflicts {
+    color: #7f8c8d;
+    margin-left: 20px;
+    font-style: italic;
+}
+
+.log-generation {
+    color: #27ae60;
+    margin: 2px 0;
+    padding: 2px 5px;
+    background: #e8f5e8;
+    border-radius: 3px;
+}
+
+.log-success {
+    color: #e74c3c;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    padding: 8px;
+    background: #ffeaa7;
+    border-radius: 5px;
+    border-left: 4px solid #fdcb6e;
+}
+
+.log-status {
+    font-weight: bold;
+    padding: 8px;
+    border-radius: 4px;
+    margin: 5px 0;
+}
+
+.log-normal {
+    color: #2c3e50;
+    margin: 3px 0;
+}
+
+.log-placeholder {
+    text-align: center;
+    color: #7f8c8d;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* Estilos específicos para estados del log */
+.log-status[class*="✅"] {
+    background: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.log-status[class*="⚡"] {
+    background: #fff3cd;
+    color: #856404;
+    border-left: 4px solid #ffc107;
+}
+
+.log-status[class*="⚠️"] {
+    background: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+/* Scrollbar personalizado */
+.log-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.log-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.log-container::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+.log-container::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
