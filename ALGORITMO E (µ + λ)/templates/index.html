@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>N-Reinas - Análisis Evolutivo</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        
+        h1, h2, h3 {
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5em;
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--light);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .error {
+            background: #fadbd8;
+            color: var(--danger);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--danger);
+        }
+        
+        .success {
+            background: #d5f4e6;
+            color: var(--success);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--success);
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .stats-card {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .stats-card h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+        
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .board-img, .convergence-img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid var(--light);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .analysis-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .analysis-table th {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .analysis-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--light);
+        }
+        
+        .analysis-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .success-high {
+            background: #d5f4e6 !important;
+        }
+        
+        .success-medium {
+            background: #fff9e6 !important;
+        }
+        
+        .success-low {
+            background: #fadbd8 !important;
+        }
+        
+        .json-input {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            height: 80px;
+        }
+        
+        .config-summary {
+            background: #e8f4fc;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .metric {
+            display: inline-block;
+            background: white;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            font-weight: 600;
+        }
+        
+        .metric.success {
+            border-left-color: var(--success);
+        }
+        
+        .metric.warning {
+            border-left-color: var(--warning);
+        }
+        
+        .metric.danger {
+            border-left-color: var(--danger);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧩 Análisis del Problema de las N-Reinas</h1>
+        
+        <div class="tab-container">
+            <button class="tab active" onclick="switchTab('single')">Ejecución Individual</button>
+            <button class="tab" onclick="switchTab('analysis')">Análisis Comparativo</button>
+        </div>
+        
+        <!-- Pestaña de Ejecución Individual -->
+        <div id="single" class="tab-content active">
+            <form method="post">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="n">Tamaño del tablero (N):</label>
+                        <input type="number" name="n" id="n" value="8" min="1" max="20" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mu">Población (μ):</label>
+                        <input type="number" name="mu" id="mu" value="30" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lambd">Descendientes (λ):</label>
+                        <input type="number" name="lambd" id="lambd" value="70" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="generations">Generaciones máximas:</label>
+                        <input type="number" name="generations" id="generations" value="100" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mutation_rate">Tasa de mutación:</label>
+                        <input type="text" name="mutation_rate" id="mutation_rate" value="0.1" step="0.01" min="0" max="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="runs">Ejecuciones para análisis:</label>
+                        <input type="number" name="runs" id="runs" value="5" min="1" max="20" required>
+                    </div>
+                </div>
+                
+                <center>
+                    <button type="submit" class="btn btn-primary">Ejecutar Algoritmo Evolutivo</button>
+                </center>
+            </form>
+        </div>
+        
+        <!-- Pestaña de Análisis Comparativo -->
+        <div id="analysis" class="tab-content">
+            <form method="post">
+                <input type="hidden" name="analyze" value="true">
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="n_values">Valores de N (JSON array):</label>
+                        <input type="text" name="n_values" id="n_values" value="[6, 8]" class="json-input" required>
+                        <small>Ej: [4, 6, 8]</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mu_values">Valores de μ (JSON array):</label>
+                        <input type="text" name="mu_values" id="mu_values" value="[10, 30, 50]" class="json-input" required>
+                        <small>Ej: [10, 30, 50]</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mutation_rates">Tasas de mutación (JSON array):</label>
+                        <input type="text" name="mutation_rates" id="mutation_rates" value="[0.1, 0.2]" class="json-input" required>
+                        <small>Ej: [0.1, 0.2, 0.3]</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="generations">Generaciones máximas:</label>
+                        <input type="number" name="generations" id="generations_analysis" value="100" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="runs">Ejecuciones por configuración:</label>
+                        <input type="number" name="runs" id="runs_analysis" value="5" min="1" max="10" required>
+                    </div>
+                </div>
+                
+                <center>
+                    <button type="submit" class="btn btn-warning">Realizar Análisis Comparativo</button>
+                </center>
+            </form>
+        </div>
+        
+        {% if error %}
+            <div class="error">
+                <strong>Error:</strong> {{ error }}
+            </div>
+        {% endif %}
+        
+        {% if resultado %}
+            <div class="container">
+                <h2>📊 Resultados de la Ejecución</h2>
+                
+                {% if resultado.es_solucion_valida %}
+                    <div class="success">
+                        <strong>✅ SOLUCIÓN VÁLIDA ENCONTRADA</strong> - 0 conflictos en el tablero
+                    </div>
+                {% else %}
+                    <div class="error">
+                        <strong>❌ No se encontró solución óptima</strong> - {{ resultado.conflictos }} conflictos restantes
+                    </div>
+                {% endif %}
+                
+                <div class="config-summary">
+                    <strong>Configuración usada:</strong> N={{ resultado.n }}, μ={{ resultado.mu }}, λ={{ resultado.lambd }}, 
+                    Mutación={{ resultado.mutation_rate }}, Generaciones={{ resultado.generaciones_maximas }}
+                </div>
+                
+                <div class="results-grid">
+                    <div class="stats-card">
+                        <h3>⚡ Métricas de Rendimiento</h3>
+                        <div class="metric {% if resultado.es_solucion_valida %}success{% else %}danger{% endif %}">
+                            Solución: {{ "VÁLIDA" if resultado.es_solucion_valida else "NO VÁLIDA" }}
+                        </div>
+                        <div class="metric">
+                            Generaciones: {{ resultado.generaciones_usadas }}/{{ resultado.generaciones_maximas }}
+                        </div>
+                        <div class="metric">
+                            Tiempo: {{ resultado.tiempo_ejecucion }}s
+                        </div>
+                        <div class="metric {% if resultado.conflictos == 0 %}success{% elif resultado.conflictos < 3 %}warning{% else %}danger{% endif %}">
+                            Conflictos: {{ resultado.conflictos }}
+                        </div>
+                    </div>
+                    
+                    <div class="stats-card">
+                        <h3>📈 Estadísticas ({{ resultado.runs }} ejecuciones)</h3>
+                        <div class="metric success">
+                            Tasa de éxito: {{ resultado.estadisticas.success_rate|round(1) }}%
+                        </div>
+                        <div class="metric">
+                            Generaciones promedio: {{ resultado.estadisticas.mean_generations|round(2) }}
+                        </div>
+                        <div class="metric">
+                            Tiempo promedio: {{ resultado.estadisticas.mean_time|round(4) }}s
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="results-grid">
+                    <div class="image-container">
+                        <h3>🎯 Tablero de la Solución</h3>
+                        <img src="data:image/png;base64,{{ resultado.tablero }}" alt="Tablero N-Reinas" class="board-img">
+                    </div>
+                    
+                    <div class="image-container">
+                        <h3>📉 Convergencia del Algoritmo</h3>
+                        <img src="data:image/png;base64,{{ resultado.convergencia }}" alt="Gráfico de Convergencia" class="convergence-img">
+                    </div>
+                </div>
+                
+                <div class="stats-card">
+                    <h3>🔍 Solución Encontrada</h3>
+                    <p><strong>Vector solución:</strong> {{ resultado.solucion }}</p>
+                    <p><strong>Interpretación:</strong> Cada índice representa una columna, el valor representa la fila donde se coloca la reina</p>
+                </div>
+            </div>
+        {% endif %}
+        
+        {% if analysis_result %}
+            <div class="container">
+                <h2>📋 Resultados del Análisis Comparativo</h2>
+                <p>Se analizaron <strong>{{ analysis_result.total_configurations }}</strong> configuraciones diferentes</p>
+                
+                <table class="analysis-table">
+                    <thead>
+                        <tr>
+                            <th>N</th>
+                            <th>μ</th>
+                            <th>λ</th>
+                            <th>Mutación</th>
+                            <th>Gen. Promedio</th>
+                            <th>Tiempo Promedio (s)</th>
+                            <th>Tasa de Éxito</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in analysis_result.data %}
+                        <tr class="{% if item.success_rate >= 80 %}success-high{% elif item.success_rate >= 50 %}success-medium{% else %}success-low{% endif %}">
+                            <td>{{ item.n }}</td>
+                            <td>{{ item.mu }}</td>
+                            <td>{{ item.lambd }}</td>
+                            <td>{{ item.mutation_rate }}</td>
+                            <td>{{ item.mean_generations }} ± {{ item.std_generations }}</td>
+                            <td>{{ item.mean_time }} ± {{ item.std_time }}</td>
+                            <td><strong>{{ item.success_rate }}%</strong></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <div class="stats-card">
+                    <h3>💡 Conclusiones del Análisis</h3>
+                    <p><strong>Para N=6:</strong> 
+                        {% set n6_data = analysis_result.data|selectattr("n", "equalto", 6)|list %}
+                        {% if n6_data %}
+                            La mejor configuración fue μ={{ (n6_data|max(attribute="success_rate")).mu }} 
+                            con {{ (n6_data|max(attribute="success_rate")).success_rate }}% de éxito
+                        {% endif %}
+                    </p>
+                    <p><strong>Para N=8:</strong>
+                        {% set n8_data = analysis_result.data|selectattr("n", "equalto", 8)|list %}
+                        {% if n8_data %}
+                            La mejor configuración fue μ={{ (n8_data|max(attribute="success_rate")).mu }} 
+                            con {{ (n8_data|max(attribute="success_rate")).success_rate }}% de éxito
+                        {% endif %}
+                    </p>
+                    <p><strong>Influencia de la mutación:</strong> Tasas alrededor de 0.1-0.2 suelen dar mejores resultados</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Ocultar todos los contenidos de pestañas
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Mostrar la pestaña seleccionada
+            document.getElementById(tabName).classList.add('active');
+            
+            // Actualizar pestañas activas
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Validación de JSON en inputs
+        document.querySelectorAll('.json-input').forEach(input => {
+            input.addEventListener('blur', function() {
+                try {
+                    JSON.parse(this.value);
+                    this.style.borderColor = '#27ae60';
+                } catch (e) {
+                    this.style.borderColor = '#e74c3c';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
